@@ -1,0 +1,10 @@
+{
+    // Use clangd for code intelligence; it reads the exact flags CMake uses.
+    "clangd.arguments": [
+        "--compile-commands-dir=${workspaceFolder}/build/debug",
+        "--header-insertion=never"
+    ],
+    // Turn off Microsoft C/C++ IntelliSense so it doesn't fight clangd
+    // (its debugger still works).
+    "C_Cpp.intelliSenseEngine": "disabled"
+}
