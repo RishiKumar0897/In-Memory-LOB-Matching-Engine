@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "order_book.h"
+#include "lob/core/order_book.h"
 
 TEST(OrderBook, StartsEmpty) {
     lob::OrderBook book;

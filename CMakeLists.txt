@@ -1,33 +1,33 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.25)
 project(lob CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)   # helps VS Code understand your code
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)   # helps VS Code / clangd understand your code
 
-# ---- the library: all your engine code goes here ----
-add_library(lob src/order_book.cpp)
-target_include_directories(lob PUBLIC include)
-target_compile_options(lob PUBLIC -Wall -Wextra -Wpedantic)
+# ---- warnings: applied ONLY to our own targets (never to GoogleTest) ----
+option(LOB_WARNINGS_AS_ERRORS "Treat compiler warnings as errors for project targets" ON)
 
-# AddressSanitizer + UBSan in Debug builds (catches memory bugs)
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  target_compile_options(lob PUBLIC -fsanitize=address,undefined -fno-omit-frame-pointer)
-  target_link_options(lob PUBLIC -fsanitize=address,undefined)
+add_library(lob_warnings INTERFACE)
+target_compile_options(lob_warnings INTERFACE -Wall -Wextra -Wpedantic)
+if(LOB_WARNINGS_AS_ERRORS)
+  target_compile_options(lob_warnings INTERFACE -Werror)
 endif()
 
 # ---- GoogleTest, downloaded automatically ----
+# SYSTEM => its headers are included with -isystem, so warnings inside
+# gtest headers can't break our -Werror test builds.
+set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
+set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
 include(FetchContent)
 FetchContent_Declare(googletest
-  URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.tar.gz)
+  URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.tar.gz
+  SYSTEM)
 FetchContent_MakeAvailable(googletest)
 
 enable_testing()
-add_executable(lob_tests tests/test_order_book.cpp)
-target_link_libraries(lob_tests PRIVATE lob GTest::gtest_main)
-include(GoogleTest)
-gtest_discover_tests(lob_tests)
 
-# ---- benchmark / replay driver ----
-add_executable(replay bench/replay.cpp)
-target_link_libraries(replay PRIVATE lob)
+add_subdirectory(src)
+add_subdirectory(app)
+add_subdirectory(tests)
+add_subdirectory(benchmarks)

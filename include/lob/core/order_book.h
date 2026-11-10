@@ -1,5 +1,5 @@
 #pragma once
-#include "types.h"
+#include "lob/common/types.h"
 #include <cstddef>
 
 namespace lob {

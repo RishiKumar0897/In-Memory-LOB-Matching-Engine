@@ -1,0 +1,85 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 25,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "debug",
+            "displayName": "Debug (ASan + UBSan)",
+            "binaryDir": "${sourceDir}/build/debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_C_FLAGS": "-O0 -g -fsanitize=address,undefined -fno-omit-frame-pointer",
+                "CMAKE_CXX_FLAGS": "-O0 -g -fsanitize=address,undefined -fno-omit-frame-pointer",
+                "CMAKE_EXE_LINKER_FLAGS": "-fsanitize=address,undefined",
+                "CMAKE_SHARED_LINKER_FLAGS": "-fsanitize=address,undefined"
+            },
+            "generator": "Ninja"
+        },
+        {
+            "name": "release",
+            "displayName": "Release",
+            "binaryDir": "${sourceDir}/build/release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_C_FLAGS": "-O3 -DNDEBUG",
+                "CMAKE_CXX_FLAGS": "-O3 -DNDEBUG"
+            },
+            "generator": "Ninja"
+        },
+        {
+            "name": "release-apple-silicon",
+            "displayName": "Release (Apple Silicon)",
+            "inherits": "release",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Darwin"
+            },
+            "cacheVariables": {
+                "CMAKE_C_FLAGS": "-O3 -DNDEBUG -mcpu=native",
+                "CMAKE_CXX_FLAGS": "-O3 -DNDEBUG -mcpu=native"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "debug",
+            "configurePreset": "debug"
+        },
+        {
+            "name": "release",
+            "configurePreset": "release"
+        },
+        {
+            "name": "release-apple-silicon",
+            "configurePreset": "release-apple-silicon"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "debug",
+            "configurePreset": "debug",
+            "output": {
+                "outputOnFailure": true
+            }
+        },
+        {
+            "name": "release",
+            "configurePreset": "release",
+            "output": {
+                "outputOnFailure": true
+            }
+        },
+        {
+            "name": "release-apple-silicon",
+            "configurePreset": "release-apple-silicon",
+            "output": {
+                "outputOnFailure": true
+            }
+        }
+    ]
+}

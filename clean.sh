@@ -3,7 +3,7 @@
 set -euo pipefail
 
 #always run from the project root
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")"
 TYPE=${1:-all}                    # ./clean.sh  or  ./clean.sh all
 
 case "$TYPE" in

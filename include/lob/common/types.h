@@ -7,5 +7,13 @@ namespace lob {
     using Quantity = std::uint32_t;
 
     enum class Side : std::uint8_t {Buy, Sell};
+
+    struct Order {
+        OrderId id;
+        Price price;
+        Quantity quantity;
+        Side side;
+        uint64_t timestamp;
+    };
     
 } //namespace lob
