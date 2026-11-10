@@ -1,7 +1,8 @@
 #pragma once
 
+#include <cassert>
 #include <cstdint>
-#include "time.h"
+#include "lob/common/time.h"
 
 namespace lob {
 using OrderId = std::uint64_t;
@@ -17,15 +18,27 @@ using SymbolId = std::uint32_t;
 struct Order {
     OrderId id;
     Price price;
+    Timestamp timestamp;
     Quantity originalQuantity;
     Quantity remainingQuantity;
-    Side side;
-    Timestamp timestamp;
-    OrderType orderType;
-    TimeInForce timeInForce;
+    Quantity cumulativeFilledQuantity;
     TraderId traderId;
     SymbolId symbolId;
+    Side side;
+    OrderType orderType;
+    TimeInForce timeInForce;
+
+    void fill(Quantity q) noexcept {
+        assert(q <= remainingQuantity);               // can't trade more than is left
+        remainingQuantity        -= q;
+        cumulativeFilledQuantity += q;
+        assert(originalQuantity == remainingQuantity + cumulativeFilledQuantity);
+    }
+
+    bool isFilled() const noexcept { return remainingQuantity == 0; }
 };
+
+
 
 
 } // namespace lob
