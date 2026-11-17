@@ -46,7 +46,4 @@ struct Order {
     bool isFilled() const noexcept { return remainingQuantity == 0; }
 };
 
-
-
-
 } // namespace lob
