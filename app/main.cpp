@@ -1,3 +1,4 @@
+// Smoke test: proves the app links against the lob library. Prints "orders: 0".
 #include "lob/core/order_book.h"
 
 #include <iostream>

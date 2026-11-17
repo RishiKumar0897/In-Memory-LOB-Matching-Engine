@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-set -euo pipefail
+# Configure, build and test. Presets are defined in CMakePresets.json.
+set -euo pipefail # stop on any error, unset variable, or failed pipe
 
 # always run from the project root
 cd "$(dirname "$0")"

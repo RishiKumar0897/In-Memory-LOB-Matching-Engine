@@ -9,7 +9,7 @@ TEST(Time, NowIsMonotonic) {
 
     for (int i = 0; i < 100000; i++) {
         lob::Timestamp t = lob::now();
-        ASSERT_GE(t, prev);
+        ASSERT_GE(t, prev); // ASSERT stops at first failure, so a loop doesn't spam errors
         prev = t;
     }
 }
@@ -30,9 +30,9 @@ TEST(Cycles, NsPerTickIsPlausibleAndStable) {
     const double a = lob::cycles::ns_per_tick();
     EXPECT_GT(a, 0.01);
     EXPECT_LT(a, 1000.0);
-    EXPECT_EQ(a, lob::cycles::ns_per_tick());
+    EXPECT_EQ(a, lob::cycles::ns_per_tick()); // exact match is fine: the value is cached
 #if defined(__aarch64__) && defined(__APPLE__)
-    EXPECT_NEAR(a, 1e9/24e6, 0.01);
+    EXPECT_NEAR(a, 1e9/24e6, 0.01); // Apple Silicon counter runs at 24 MHz
 #endif
 }
 

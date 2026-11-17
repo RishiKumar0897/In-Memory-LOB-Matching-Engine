@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Delete build output: all, or one preset's folder.
 
 set -euo pipefail
 

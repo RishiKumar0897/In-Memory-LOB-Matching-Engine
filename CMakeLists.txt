@@ -1,3 +1,4 @@
+# Top-level build. Targets: lob (library), lob_app, lob_tests, lob_warnings (flags only).
 cmake_minimum_required(VERSION 3.25)
 project(lob CXX)
 
@@ -8,6 +9,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)   # helps VS Code / clangd understand your
 # ---- warnings: applied ONLY to our own targets (never to GoogleTest) ----
 option(LOB_WARNINGS_AS_ERRORS "Treat compiler warnings as errors for project targets" ON)
 
+# INTERFACE library = settings only; targets that link it get these flags.
 add_library(lob_warnings INTERFACE)
 target_compile_options(lob_warnings INTERFACE -Wall -Wextra -Wpedantic)
 if(LOB_WARNINGS_AS_ERRORS)
@@ -25,7 +27,7 @@ FetchContent_Declare(googletest
   SYSTEM)
 FetchContent_MakeAvailable(googletest)
 
-enable_testing()
+enable_testing() # enables ctest
 
 add_subdirectory(src)
 add_subdirectory(app)

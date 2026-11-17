@@ -1,3 +1,4 @@
+# Builds and tests on every push to main and every PR.
 name: CI
 
 on:
@@ -10,8 +11,8 @@ jobs:
     name: ${{ matrix.preset }} (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
-      matrix:
+      fail-fast: false # keep other runs going if one fails
+      matrix: # 2 OSes x 2 presets = 4 runs
         os: [ubuntu-24.04, macos-15]
         preset: [debug, release]
     steps:
@@ -34,6 +35,7 @@ jobs:
       - name: Test
         run: ctest --preset ${{ matrix.preset }}
 
+  # Fails if any C++ file doesn't match .clang-format.
   clang-format:
     runs-on: ubuntu-24.04
     steps:
