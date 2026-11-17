@@ -13,5 +13,6 @@ TEST(FixedPoint, ParsePrice) {
     EXPECT_EQ(parse_price("123.456", 7, tick_size), 0); // too many decimal places
     EXPECT_EQ(parse_price("abc", 3, tick_size), 0); // invalid input
     EXPECT_EQ(parse_price("", 0, tick_size), 0); // empty input
+    EXPECT_EQ(parse_price("1.5", 3, tick_size), 150); //padding bug fix
 }
 
