@@ -27,6 +27,9 @@ TEST(MessageTypes, AreTriviallyCopyable) {
     EXPECT_TRUE(std::is_trivially_copyable_v<lob::ModifyOrder>);
 }
 
+// A Command can hold each message type, and reports which one it holds.
+// `.field = value` (designated initializers) must follow the struct's field order.
+// ASSERT before std::get, since std::get throws if the variant holds a different type.
 TEST(MessageTypes, CommandHoldsEachMessage) {
     lob::Command cmd = lob::NewOrder{.client_order_id = 1,
                                      .price = 100,

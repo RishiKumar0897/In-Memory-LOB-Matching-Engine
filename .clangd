@@ -1,0 +1,5 @@
+# clangd config. Headers not listed in compile_commands.json borrow flags from a
+# "similar" file (sometimes a GoogleTest one with no -I include), so add it here.
+# Path is relative to build/debug, where the compile commands run.
+CompileFlags:
+  Add: [-I../../include]

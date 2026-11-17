@@ -64,6 +64,7 @@ constexpr std::int64_t parse_price(const char* str, std::size_t len, const TickS
                 ++i;
                 ++decimal_digits;
         }
+        // Pad short decimals: "1.5" with 2 decimals -> 5 * 10 = 50.
         decimal_part *= pow10(tick_size.decimals - decimal_digits);
 
         //extra digits are being dropped.
