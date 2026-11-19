@@ -34,6 +34,7 @@ namespace lob {
         // Validation
         InvalidQuantity,      // e.g. zero
         InvalidPrice,         // e.g. not on the tick grid
+        InvalidTimeInForce,   // TIF not allowed for this order type /instrument
         UnknownInstrument,
         UnsupportedOrderType,
         DuplicateOrderId,
