@@ -5,6 +5,7 @@ add_executable(lob_tests
   unit/test_time.cpp
   unit/test_message_protocol.cpp
   unit/test_execution_report.cpp
+  unit/test_validator.cpp
 )
 # gtest_main supplies main(), which runs every TEST.
 target_link_libraries(lob_tests PRIVATE lob lob_warnings GTest::gtest_main)
